@@ -9,6 +9,7 @@ import { logout } from "@/service/auth.service";
 import { Users } from "lucide-react";
 import Link from "next/link";
 import { useRef } from "react";
+import Modal from "../modal/Modal";
 
 export function AppSidebar() {
   const logoutUser = async () => {
@@ -57,7 +58,7 @@ export function AppSidebar() {
           <hr />
           <div>
             <div ref={groupRef} className="hidden">
-              <Button className="w-full">Create Gorup</Button>
+              <Modal data={data?.data || []}></Modal>
             </div>
 
             <div ref={singleRef}>

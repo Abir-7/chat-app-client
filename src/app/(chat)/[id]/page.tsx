@@ -60,7 +60,7 @@ const UserChat = ({ params }: { params: { id: string } }) => {
         {/* Chat Messages Area */}
         <div className="flex-grow p-4 overflow-y-auto space-y-4">
           {" "}
-          {messages.map((msg, index) => (
+          {messages?.map((msg, index) => (
             <div
               key={index}
               className={`message p-3 rounded-lg max-w-xs ${
