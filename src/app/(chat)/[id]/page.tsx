@@ -63,8 +63,10 @@ const UserChat = ({ params }: { params: { id: string } }) => {
           {messages.map((msg, index) => (
             <div
               key={index}
-              className={`message ${
-                msg.senderId === user?.userId ? "sent" : "received"
+              className={`message p-3 rounded-lg max-w-xs ${
+                msg.senderId === user?.userId
+                  ? "bg-zinc-950 text-white ml-auto"
+                  : "bg-gray-200 text-black"
               }`}
             >
               <p>{msg.message}</p>

@@ -66,9 +66,13 @@ export function AppSidebar() {
                 User List
               </p>
               {data?.data?.map((user) => (
-                <Link key={user._id} href={`/${user._id}`}>
+                <Link
+                  className="flex flex-col  bg-zinc-800 rounded-md my-2"
+                  key={user._id}
+                  href={`/${user._id}`}
+                >
                   {" "}
-                  <div className="flex rounded-md  gap-2 bg-zinc-800 p-2 items-center">
+                  <div className="flex   gap-2  p-2 items-center">
                     <div className="w-10 h-10 bg-white rounded-full"></div>
                     <p className="text-white"> {user.customer?.name}</p>
                   </div>
