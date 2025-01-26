@@ -2,35 +2,51 @@
 import { FormWrapper } from "@/components/common/Form/FormWrapper";
 import InputField from "@/components/common/Form/InputField";
 import SubmitButton from "@/components/common/Form/SubmitButton";
-import { ILoginUser } from "@/interface/form/login.interface";
-import { useAuthLoginMutation } from "@/redux/api/authApi/authApi";
-import { setToken, setUser } from "@/redux/features/userSlice";
+import { ISignupUser } from "@/interface/form/login_signup.interface";
+import { useCreateUserMutation } from "@/redux/api/userApi/userApi";
 
-import { saveCookie } from "@/service/auth.service";
-import { decodeToken } from "@/utils/tokenDecode";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import React from "react";
-import { useDispatch } from "react-redux";
+import { toast } from "sonner";
 
 const Signup = () => {
-  const dispatch = useDispatch();
-  const [userLogin] = useAuthLoginMutation();
-  const onSubmit = async (data: ILoginUser) => {
+  const router = useRouter();
+  const [createUser] = useCreateUserMutation();
+  const onSubmit = async (data: ISignupUser) => {
     console.log(data);
-    const res = await userLogin(data);
-    console.log(res);
+    const formData = new FormData();
 
-    const token = res?.data?.data;
-    console.log(token);
-    await saveCookie(token);
-    const user = await decodeToken(token);
-    dispatch(setToken(token));
-    dispatch(setUser(user));
-    console.log(user);
+    // Append image if it exists
+    if (data.image && data.image.length > 0) {
+      formData.append("image", data.image[0]); // Only the first file
+    }
+
+    // Append other data as a JSON string
+    const otherData = {
+      password: data.password,
+      customerData: {
+        email: data.email,
+        name: data.name,
+        contactNo: data.contactNo,
+        address: data.address,
+      },
+    };
+    formData.append("data", JSON.stringify(otherData));
+    const res = await createUser(formData);
+    if (res.data?.success) {
+      toast.success("User created");
+      router.push("/auth/login");
+    }
   };
-  const defaultValues: ILoginUser = {
+
+  const defaultValues: ISignupUser = {
     email: "",
+    image: null,
+    name: "",
+    contactNo: "",
+    address: "",
     password: "",
   };
   return (
@@ -38,7 +54,7 @@ const Signup = () => {
       <h2 className="text-2xl font-semibold text-center text-gray-700 mb-4">
         SignUp
       </h2>
-      <FormWrapper<ILoginUser>
+      <FormWrapper<ISignupUser>
         defaultValues={defaultValues}
         onSubmit={onSubmit}
       >
@@ -47,33 +63,38 @@ const Signup = () => {
           label="Email"
           type="email"
           placeholder="Enter your email"
-          validation={{
-            required: "Email is required",
-            pattern: {
-              value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-              message: "Enter a valid email address",
-            },
-          }}
+          validation={{ required: "This field is Required" }}
         />
         <InputField
+          name="image"
+          label="Image"
+          type="file"
+          placeholder="Your Image"
+          validation={{ required: "This field is Required" }}
+        />
+        <InputField
+          validation={{ required: "This field is Required" }}
           name="name"
           label="Name"
           type="text"
           placeholder="Enter your name"
         />
         <InputField
+          validation={{ required: "This field is Required" }}
           name="contactNo"
           label="ContactNo"
           type="text"
           placeholder="Enter your contact number"
         />
         <InputField
+          validation={{ required: "This field is Required" }}
           name="address"
           label="Address"
           type="text"
           placeholder="Enter your address"
         />
         <InputField
+          validation={{ required: "This field is Required" }}
           name="password"
           label="Password"
           type="password"

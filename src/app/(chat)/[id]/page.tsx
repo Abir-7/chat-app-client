@@ -11,6 +11,7 @@ import io from "socket.io-client";
 import { useSearchParams } from "next/navigation";
 import { useGetMessageQuery } from "@/redux/api/messageApi/messageApi";
 import { setChatOrUserId } from "@/redux/features/chatSlice";
+import { config } from "@/config";
 
 interface IMessage {
   message: string;
@@ -19,7 +20,7 @@ interface IMessage {
 const defaultValue: IMessage = { message: "" };
 
 // Singleton socket connection outside the component
-const socket = io("http://localhost:3500");
+const socket = io(config.backendBaseUrl);
 
 const UserChat = ({ params }: { params: { id: string } }) => {
   const dispatch = useAppDispatch();

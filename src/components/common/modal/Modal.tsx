@@ -9,6 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { config } from "@/config";
 import { IUser } from "@/interface/users/user.interface";
 import { useCreateGroupMutation } from "@/redux/api/chatApi/chatApi";
 import { useAppSelector } from "@/redux/hooks";
@@ -85,7 +86,7 @@ const Modal = ({ data }: { data: IUser[] }) => {
                       width={100}
                       height={100}
                       alt=""
-                      src={`http://localhost:3500/${user.customer?.image}`}
+                      src={`${config.backendBaseUrl}/${user.customer?.image}`}
                     ></Image>
                     <div>{user.customer?.name}</div>
                   </div>

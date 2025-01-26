@@ -11,16 +11,20 @@ import Link from "next/link";
 import { useState } from "react";
 import Modal from "../modal/Modal";
 import { useGetUserGroupQuery } from "@/redux/api/chatApi/chatApi";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAppSelector } from "@/redux/hooks";
+import Image from "next/image";
+import { config } from "@/config";
 
 export function AppSidebar() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   console.log(searchParams);
   const type = searchParams.get("type");
   console.log("type", type);
   const logoutUser = async () => {
     await logout();
+    router.push("/auth/login");
   };
   const { chatOrUserId } = useAppSelector((state) => state.chat);
   const { data: groups } = useGetUserGroupQuery(null);
@@ -109,7 +113,15 @@ export function AppSidebar() {
                   >
                     {" "}
                     <div className="flex   gap-2  p-2 items-center">
-                      <div className="w-10 h-10 bg-white rounded-full"></div>
+                      <div className="w-10 h-10 bg-white rounded-full">
+                        <Image
+                          className="w-full h-full rounded-full"
+                          src={`${config.backendBaseUrl}/${user.customer?.image}`}
+                          width={100}
+                          height={100}
+                          alt=""
+                        />
+                      </div>
                       <p className="text-white"> {user.customer?.name}</p>
                     </div>
                   </Link>

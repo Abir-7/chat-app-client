@@ -8,7 +8,14 @@ const userApi = baseApi.injectEndpoints({
     getAllUser: builder.query<IBaseApiResponse<IUser[]>, string>({
       query: () => `/user/get-all-user`,
     }),
+    createUser: builder.mutation<IBaseApiResponse<string>, any>({
+      query: (data) => ({
+        url: "/user/create-user",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useGetAllUserQuery } = userApi;
+export const { useGetAllUserQuery, useCreateUserMutation } = userApi;

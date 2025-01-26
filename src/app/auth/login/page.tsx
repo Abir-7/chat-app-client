@@ -2,32 +2,36 @@
 import { FormWrapper } from "@/components/common/Form/FormWrapper";
 import InputField from "@/components/common/Form/InputField";
 import SubmitButton from "@/components/common/Form/SubmitButton";
-import { ILoginUser } from "@/interface/form/login.interface";
+import { ILoginUser } from "@/interface/form/login_signup.interface";
 import { useAuthLoginMutation } from "@/redux/api/authApi/authApi";
 import { setToken, setUser } from "@/redux/features/userSlice";
 
 import { saveCookie } from "@/service/auth.service";
 import { decodeToken } from "@/utils/tokenDecode";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import React from "react";
 import { useDispatch } from "react-redux";
 
 const Login = () => {
+  const router = useRouter();
   const dispatch = useDispatch();
   const [userLogin] = useAuthLoginMutation();
   const onSubmit = async (data: ILoginUser) => {
     console.log(data);
     const res = await userLogin(data);
     console.log(res);
-
-    const token = res?.data?.data;
-    console.log(token);
-    await saveCookie(token);
-    const user = await decodeToken(token);
-    dispatch(setToken(token));
-    dispatch(setUser(user));
-    console.log(user);
+    if (res.data?.success) {
+      const token = res?.data?.data;
+      console.log(token);
+      await saveCookie(token);
+      const user = await decodeToken(token);
+      dispatch(setToken(token));
+      dispatch(setUser(user));
+      console.log(user);
+      router.push("/");
+    }
   };
   const defaultValues: ILoginUser = {
     email: "",
