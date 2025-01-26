@@ -8,7 +8,6 @@ interface IUserState {
 
 interface IBaseState {
   token: string | null;
-
   user: IUserState | null;
 }
 

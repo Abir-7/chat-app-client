@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userSliceReducer from "./features/userSlice";
 import { baseApi } from "./api/baseApi";
+import chatSliceReducer from "./features/chatSlice";
 import {
   persistReducer,
   persistStore,
@@ -24,7 +25,7 @@ const persistedAuthReducer = persistReducer(persistConfig, userSliceReducer);
 export const store = configureStore({
   reducer: {
     user: persistedAuthReducer,
-
+    chat: chatSliceReducer,
     [baseApi.reducerPath]: baseApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>

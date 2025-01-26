@@ -3,14 +3,14 @@ import baseApi from "../baseApi";
 
 const messageApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getUserMessage: builder.query<
+    getMessage: builder.query<
       any,
-      { senderId: string; receiverId: string }
+      { senderId: string; receiverId: string; chatId: string }
     >({
       query: (data) =>
-        `/message/get-message?senderId=${data.senderId}&receiverId=${data.receiverId}`,
+        `/chat/get-message?senderId=${data.senderId}&receiverId=${data.receiverId}&chatId=${data.chatId}`,
     }),
   }),
 });
 
-export const { useGetUserMessageQuery } = messageApi;
+export const { useGetMessageQuery } = messageApi;

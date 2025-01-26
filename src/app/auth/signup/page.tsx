@@ -13,7 +13,7 @@ import Link from "next/link";
 import React from "react";
 import { useDispatch } from "react-redux";
 
-const Login = () => {
+const Signup = () => {
   const dispatch = useDispatch();
   const [userLogin] = useAuthLoginMutation();
   const onSubmit = async (data: ILoginUser) => {
@@ -34,9 +34,9 @@ const Login = () => {
     password: "",
   };
   return (
-    <div className="w-full max-w-md mx-auto mt-8 p-6 bg-white rounded-lg shadow-lg">
+    <div className="w-full max-w-md  mx-auto mt-8 p-6 bg-white rounded-lg shadow-lg">
       <h2 className="text-2xl font-semibold text-center text-gray-700 mb-4">
-        Login
+        SignUp
       </h2>
       <FormWrapper<ILoginUser>
         defaultValues={defaultValues}
@@ -56,6 +56,24 @@ const Login = () => {
           }}
         />
         <InputField
+          name="name"
+          label="Name"
+          type="text"
+          placeholder="Enter your name"
+        />
+        <InputField
+          name="contactNo"
+          label="ContactNo"
+          type="text"
+          placeholder="Enter your contact number"
+        />
+        <InputField
+          name="address"
+          label="Address"
+          type="text"
+          placeholder="Enter your address"
+        />
+        <InputField
           name="password"
           label="Password"
           type="password"
@@ -68,9 +86,9 @@ const Login = () => {
 
       <div className="mt-4 text-center">
         <p className="text-gray-600">
-          Don&apos;t have an account?{" "}
-          <Link href="/auth/signup" className="text-blue-600 hover:underline">
-            Register here
+          Already have an account?{" "}
+          <Link href="/auth/login" className="text-blue-600 hover:underline">
+            Login here
           </Link>
         </p>
       </div>
@@ -78,4 +96,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;
