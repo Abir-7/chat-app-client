@@ -37,36 +37,36 @@ export function AppSidebar() {
   return (
     <Dialog>
       <Sidebar className="  absolute left-0 pb-4 ">
+        {/* tab */}
+        <DialogTitle className="py-2">
+          <div className="flex justify-evenly pt-1 items-center">
+            <Button
+              className={`${
+                selectedTab === "single"
+                  ? "bg-zinc-300 hover:text-white text-black"
+                  : ""
+              } flex gap-0`}
+              onClick={() => setSelectedTab("single")}
+            >
+              <Users></Users>
+            </Button>{" "}
+            <Button
+              className={`${
+                selectedTab === "group"
+                  ? "bg-zinc-300 hover:text-white text-black"
+                  : ""
+              } flex gap-0`}
+              onClick={() => setSelectedTab("group")}
+            >
+              <Users></Users> <Users></Users>
+            </Button>
+          </div>
+        </DialogTitle>
+        <hr />
         <SidebarContent
           aria-describedby={undefined}
           className="bg-base-100 p-1"
         >
-          {/* tab */}
-          <DialogTitle>
-            <div className="flex justify-evenly pt-1 items-center">
-              <Button
-                className={`${
-                  selectedTab === "single"
-                    ? "bg-zinc-300 hover:text-white text-black"
-                    : ""
-                } flex gap-0`}
-                onClick={() => setSelectedTab("single")}
-              >
-                <Users></Users>
-              </Button>{" "}
-              <Button
-                className={`${
-                  selectedTab === "group"
-                    ? "bg-zinc-300 hover:text-white text-black"
-                    : ""
-                } flex gap-0`}
-                onClick={() => setSelectedTab("group")}
-              >
-                <Users></Users> <Users></Users>
-              </Button>
-            </div>
-          </DialogTitle>
-          <hr />
           <div>
             {/* sidebar group chat */}
             {selectedTab === "group" && (
@@ -116,7 +116,7 @@ export function AppSidebar() {
                       <div className="w-10 h-10 bg-white rounded-full">
                         <Image
                           className="w-full h-full rounded-full"
-                          src={`${config.backendBaseUrl}/${user.customer?.image}`}
+                          src={`${config.backendBaseUrl}${user.customer?.image}`}
                           width={100}
                           height={100}
                           alt=""
@@ -130,7 +130,7 @@ export function AppSidebar() {
             )}
           </div>
         </SidebarContent>
-        <div className="w-full px-1">
+        <div className="w-full px-1 pt-2">
           <Button className="w-full" onClick={logoutUser}>
             Logout
           </Button>

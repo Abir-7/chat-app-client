@@ -86,7 +86,7 @@ const Modal = ({ data }: { data: IUser[] }) => {
                       width={100}
                       height={100}
                       alt=""
-                      src={`${config.backendBaseUrl}/${user.customer?.image}`}
+                      src={`${config.backendBaseUrl}${user.customer?.image}`}
                     ></Image>
                     <div>{user.customer?.name}</div>
                   </div>

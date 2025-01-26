@@ -158,7 +158,7 @@ const UserChat = ({ params }: { params: { id: string } }) => {
       className="flex flex-col relative"
     >
       <div
-        style={{ height: "calc(100vh - 132px)" }}
+        style={{ height: "calc(100vh - 141px)" }}
         className="flex flex-col  "
       >
         {/* Chat Messages Area */}
