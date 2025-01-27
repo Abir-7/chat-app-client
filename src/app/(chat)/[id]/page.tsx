@@ -6,7 +6,7 @@ import { Send } from "lucide-react";
 import { FormWrapper } from "@/components/common/Form/FormWrapper";
 import InputField from "@/components/common/Form/InputField";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import io from "socket.io-client";
 import { useSearchParams } from "next/navigation";
 import { useGetMessageQuery } from "@/redux/api/messageApi/messageApi";
@@ -24,6 +24,7 @@ const defaultValue: IMessage = { message: "" };
 const socket = io(config.backendBaseUrl);
 
 const UserChat = ({ params }: { params: { id: string } }) => {
+  const bottomRef = useRef<HTMLDivElement | null>(null);
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.user);
   const reciverId = params?.id;
@@ -153,6 +154,11 @@ const UserChat = ({ params }: { params: { id: string } }) => {
     }
   };
 
+  useEffect(() => {
+    // Scroll to the bottom whenever messages change
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
   return (
     <div
       style={{ height: "calc(100vh - 64px)" }}
@@ -185,11 +191,13 @@ const UserChat = ({ params }: { params: { id: string } }) => {
                   </div>
                 </div>
               ))}
+              <div ref={bottomRef}></div>
             </>
           )}
         </div>
         {/* Chat Messages Area End */}
       </div>
+
       <hr />
       <div>
         <FormWrapper<IMessage> defaultValues={defaultValue} onSubmit={onSubmit}>
