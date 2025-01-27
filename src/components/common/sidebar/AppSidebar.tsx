@@ -15,6 +15,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useAppSelector } from "@/redux/hooks";
 import Image from "next/image";
 import { config } from "@/config";
+import Loading from "../Loading/Loading";
 
 export function AppSidebar() {
   const router = useRouter();
@@ -27,9 +28,10 @@ export function AppSidebar() {
     router.push("/auth/login");
   };
   const { chatOrUserId } = useAppSelector((state) => state.chat);
-  const { data: groups } = useGetUserGroupQuery(null);
+  const { data: groups, isLoading: isGroupLoading } =
+    useGetUserGroupQuery(null);
 
-  const { data, error } = useGetAllUserQuery("");
+  const { data, error, isLoading } = useGetAllUserQuery("");
   console.log(data, error);
   const [selectedTab, setSelectedTab] = useState(type || "single");
   console.log(selectedTab);
@@ -75,21 +77,28 @@ export function AppSidebar() {
                 <div className="text-center font-semibold mt-1">Group List</div>
                 <hr />
                 <div className="my-2 flex  flex-col gap-2">
-                  {groups?.data?.map((group) => (
-                    <Link key={group._id} href={`/${group._id}?type=group`}>
-                      <div>
-                        <div
-                          className={`text-lg rounded-lg font-bold text-center py-2 ${
-                            chatOrUserId === group._id
-                              ? "text-white bg-zinc-400"
-                              : "bg-zinc-950 text-white"
-                          }`}
-                        >
-                          <div>{group.name}</div>
-                        </div>
-                      </div>
-                    </Link>
-                  ))}
+                  {isGroupLoading ? (
+                    <Loading></Loading>
+                  ) : (
+                    <>
+                      {" "}
+                      {groups?.data?.map((group) => (
+                        <Link key={group._id} href={`/${group._id}?type=group`}>
+                          <div>
+                            <div
+                              className={`text-lg rounded-lg font-bold text-center py-2 ${
+                                chatOrUserId === group._id
+                                  ? "text-white bg-zinc-400"
+                                  : "bg-zinc-950 text-white"
+                              }`}
+                            >
+                              <div>{group.name}</div>
+                            </div>
+                          </div>
+                        </Link>
+                      ))}
+                    </>
+                  )}
                 </div>
               </div>
             )}
@@ -101,31 +110,38 @@ export function AppSidebar() {
                   {" "}
                   User List
                 </p>
-                {data?.data?.map((user) => (
-                  <Link
-                    className={`flex flex-col   rounded-md my-2 ${
-                      chatOrUserId === user?._id
-                        ? "bg-zinc-400 text-black"
-                        : "bg-zinc-950"
-                    }`}
-                    key={user._id}
-                    href={`/${user._id}?type=single`}
-                  >
+                {isLoading ? (
+                  <Loading></Loading>
+                ) : (
+                  <>
                     {" "}
-                    <div className="flex   gap-2  p-2 items-center">
-                      <div className="w-10 h-10 bg-white rounded-full">
-                        <Image
-                          className="w-full h-full rounded-full"
-                          src={`${config.backendBaseUrl}${user.customer?.image}`}
-                          width={100}
-                          height={100}
-                          alt=""
-                        />
-                      </div>
-                      <p className="text-white"> {user.customer?.name}</p>
-                    </div>
-                  </Link>
-                ))}
+                    {data?.data?.map((user) => (
+                      <Link
+                        className={`flex flex-col   rounded-md my-2 ${
+                          chatOrUserId === user?._id
+                            ? "bg-zinc-400 text-black"
+                            : "bg-zinc-950"
+                        }`}
+                        key={user._id}
+                        href={`/${user._id}?type=single`}
+                      >
+                        {" "}
+                        <div className="flex   gap-2  p-2 items-center">
+                          <div className="w-10 h-10 bg-white rounded-full">
+                            <Image
+                              className="w-full h-full rounded-full"
+                              src={`${config.backendBaseUrl}${user.customer?.image}`}
+                              width={100}
+                              height={100}
+                              alt=""
+                            />
+                          </div>
+                          <p className="text-white"> {user.customer?.name}</p>
+                        </div>
+                      </Link>
+                    ))}
+                  </>
+                )}
               </div>
             )}
           </div>

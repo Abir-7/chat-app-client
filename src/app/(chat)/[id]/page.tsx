@@ -12,6 +12,7 @@ import { useSearchParams } from "next/navigation";
 import { useGetMessageQuery } from "@/redux/api/messageApi/messageApi";
 import { setChatOrUserId } from "@/redux/features/chatSlice";
 import { config } from "@/config";
+import Loading from "@/components/common/Loading/Loading";
 
 interface IMessage {
   message: string;
@@ -30,7 +31,7 @@ const UserChat = ({ params }: { params: { id: string } }) => {
   const type = searchParams.get("type");
 
   // Fetch messages based on the type
-  const { data } = useGetMessageQuery(
+  const { data, isLoading } = useGetMessageQuery(
     type === "group"
       ? { chatId: reciverId, receiverId: "", senderId: "" }
       : {
@@ -163,20 +164,29 @@ const UserChat = ({ params }: { params: { id: string } }) => {
       >
         {/* Chat Messages Area */}
         <div className="flex-grow p-4 overflow-y-auto space-y-4">
-          {messages?.map((msg, index) => (
-            <div key={index}>
-              <div
-                className={`message p-3 rounded-lg max-w-xs ${
-                  msg.sender._id === user?.userId
-                    ? "bg-zinc-950 text-white ml-auto"
-                    : "bg-gray-200 text-black"
-                }`}
-              >
-                <div className="text-xs font-semibold">{msg.sender?.name}</div>
-                <div>{msg.content}</div>
-              </div>
-            </div>
-          ))}
+          {isLoading ? (
+            <Loading></Loading>
+          ) : (
+            <>
+              {" "}
+              {messages?.map((msg, index) => (
+                <div key={index}>
+                  <div
+                    className={`message p-3 rounded-lg max-w-xs ${
+                      msg.sender._id === user?.userId
+                        ? "bg-zinc-950 text-white ml-auto"
+                        : "bg-gray-200 text-black"
+                    }`}
+                  >
+                    <div className="text-xs font-semibold">
+                      {msg.sender?.name}
+                    </div>
+                    <div>{msg.content}</div>
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
         </div>
         {/* Chat Messages Area End */}
       </div>
