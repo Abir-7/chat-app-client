@@ -15,7 +15,9 @@ export const baseApi = createApi({
       return headers;
     },
   }),
+
   endpoints: () => ({}),
+  tagTypes: ["group"],
 });
 
 export default baseApi;

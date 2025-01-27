@@ -16,12 +16,14 @@ const chatApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["group"],
     }),
     getUserGroup: builder.query<IBaseApiResponse<IChatGroup[]>, null>({
       query: () => ({
         url: `/chat/get-user-group`,
         method: "GET",
       }),
+      providesTags: ["group"],
     }),
   }),
 });
