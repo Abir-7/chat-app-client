@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 
 import React from "react";
 import { useDispatch } from "react-redux";
+import { toast } from "sonner";
 
 const Login = () => {
   const router = useRouter();
@@ -31,6 +32,8 @@ const Login = () => {
       dispatch(setUser(user));
       console.log(user);
       router.push("/");
+    } else {
+      toast.error("Something went wrong!! Maybe render server problem");
     }
   };
   const defaultValues: ILoginUser = {

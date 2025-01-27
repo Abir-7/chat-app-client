@@ -38,6 +38,8 @@ const Signup = () => {
     if (res.data?.success) {
       toast.success("User created");
       router.push("/auth/login");
+    } else {
+      toast.error("Something went wrong!! Maybe render server problem");
     }
   };
 
