@@ -24,6 +24,7 @@ const Login = () => {
     const res = await userLogin(data);
     console.log(res);
     if (res.data?.success) {
+      toast.success("Login Successful");
       const token = res?.data?.data;
       console.log(token);
       await saveCookie(token);
